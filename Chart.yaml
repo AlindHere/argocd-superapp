@@ -1,0 +1,6 @@
+apiVersion: v2
+name: Dev Environment
+description: Helm chart for managing Dev Envirnment
+type: application
+version: 0.1.0
+appVersion: 0.1.0

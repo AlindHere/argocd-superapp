@@ -1,0 +1,77 @@
+replicaCount: 1
+image:
+  repository: 1234567890.dkr.ecr.ap-southeast-1.amazonaws.com/service-a
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    appPort: 9090
+
+migrations:
+  enabled: false
+  args: ["migrate", "up"]
+
+#Ambassador gateway mappings
+# gateway:
+#   ambassador_id: [ "dev-gw" ]
+#   host: app.example.com
+#   enabled: true
+#   timeout_ms: 0
+#   idle_timeout_ms: 0
+#   grpc: false
+#   routes:
+#     api:
+#       prefix: /service-a/
+
+resources: {}
+  # limits:
+  #   cpu: 1000m
+  #   memory: 1024Mi
+  # requests:
+  #   cpu: 1000m
+  #   memory: 1024Mi
+
+ingress:
+  enabled: true
+  className: kong
+  annotations:
+    konghq.com/strip-path: 'true'
+  hosts: 
+    - host: app.example.com
+      paths: 
+        - path: /service-a/
+          pathType: Prefix
+        
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+configFiles:
+  enabled: true
+  mountPath: /etc/app
+  files:
+    config.yaml:
+      ENV: "dev"
+env:
+  ENV: "dev"
+  
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 9090
+  initialDelaySeconds: 60
+  periodSeconds: 30
+
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 9090
+  initialDelaySeconds: 60   
+  periodSeconds: 5

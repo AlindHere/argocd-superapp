@@ -1,0 +1,14 @@
+project: default
+environment: dev
+destination:
+  server: https://BFB639WRRI895E49A5.gr7.ap-south-1.eks.amazonaws.com
+  namespace: dev
+defaultRepository: https://helmcharts.example.com/stable
+
+parameters: []
+
+applications:
+- chart: service-a
+
+- chart: service-b
+  name: my-app
