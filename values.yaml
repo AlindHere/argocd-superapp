@@ -1,7 +1,7 @@
 project: default
 environment: dev
 destination:
-  server: https://BFB639WRRI895E49A5.gr7.ap-south-1.eks.amazonaws.com
+  server: https://BFB639WRRI895E49A5.gr7.ap-south-1.eks.amazonaws.com           // Cluster URL
   namespace: dev
 defaultRepository: https://helmcharts.example.com/stable
 
